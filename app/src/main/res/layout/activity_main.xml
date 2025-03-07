@@ -1,19 +1,156 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:padding="16dp">
 
     <TextView
-        android:layout_width="wrap_content"
+        style="@style/TextBoxStyle"
+        android:id="@+id/textViewHistory"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_above="@+id/editTextParams"
+        android:layout_centerVertical="true"
+        android:layout_alignParentTop="true"
+        android:focusable="true"
+        android:inputType="none"
+        tools:ignore="Autofill" />
+    <EditText
+        style="@style/TextBoxStyle"
+        android:id="@+id/editTextParams"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/textViewResult"
+        android:layout_centerVertical="true"
+        android:autofillHints=""
+        android:focusable="true"
+        android:hint="0"
+        android:inputType="none" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        style="@style/TextBoxStyle"
+        android:id="@+id/textViewResult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/gridButtons"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="20dp"
+        android:focusable="true"
+        android:hint="="
+        android:inputType="none"
+        tools:ignore="Autofill" />
+
+    <GridLayout
+        android:id="@+id/gridButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="5dp"
+        android:columnCount="4"
+        android:rowCount="5">
+
+        <Button
+            android:id="@+id/buttonAdd"
+            style="@style/ButtonStyle"
+            android:layout_width="58dp"
+            android:text="+" />
+
+        <Button
+            android:id="@+id/buttonSub"
+            style="@style/ButtonStyle"
+            android:text="-" />
+
+        <Button
+            android:id="@+id/buttonMul"
+            style="@style/ButtonStyle"
+            android:text="*" />
+
+        <Button
+            android:id="@+id/buttonDiv"
+            style="@style/ButtonStyle"
+            android:text="/" />
+
+        <Button
+            android:id="@+id/buttoPct"
+            style="@style/ButtonStyle"
+            android:text="%" />
+
+        <Button
+            android:id="@+id/button1"
+            style="@style/ButtonStyle"
+            android:text="1" />
+
+        <Button
+            android:id="@+id/button2"
+            style="@style/ButtonStyle"
+            android:text="2" />
+
+        <Button
+            android:id="@+id/button3"
+            style="@style/ButtonStyle"
+            android:text="3" />
+
+        <Button
+            android:id="@+id/buttonDel"
+            style="@style/ButtonStyle"
+            android:text="Del" />
+
+        <Button
+            android:id="@+id/button4"
+            style="@style/ButtonStyle"
+            android:text="4" />
+
+        <Button
+            android:id="@+id/button5"
+            style="@style/ButtonStyle"
+            android:text="5" />
+
+        <Button
+            android:id="@+id/button6"
+            style="@style/ButtonStyle"
+            android:text="6" />
+
+        <Button
+            android:id="@+id/buttonClr"
+            style="@style/ButtonStyle"
+            android:text="AC" />
+
+        <Button
+            android:id="@+id/button7"
+            style="@style/ButtonStyle"
+            android:text="7" />
+
+        <Button
+            android:id="@+id/button8"
+            style="@style/ButtonStyle"
+            android:text="8" />
+
+        <Button
+            android:id="@+id/button9"
+            style="@style/ButtonStyle"
+            android:text="9" />
+
+        <Button
+            android:id="@+id/buttonExt"
+            style="@style/ButtonStyle"
+            android:text="Ext" />
+
+        <Button
+            android:id="@+id/buttonDot"
+            style="@style/ButtonStyle"
+            android:text="." />
+
+        <Button
+            android:id="@+id/button0"
+            style="@style/ButtonStyle"
+            android:text="0" />
+
+        <Button
+            android:id="@+id/buttonEq"
+            style="@style/ButtonStyle"
+            android:text="=" />
+
+    </GridLayout>
+
+</RelativeLayout>
