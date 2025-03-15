@@ -136,7 +136,7 @@ class MainActivity : AppCompatActivity() {
     private fun getEqResult() {
         var params = editTextParams.text.toString()
         if (params.isEmpty()) {
-            editTextParams.setText(0)
+            editTextParams.text.append("0")
             params = "0"
         }
         Log.i("MainActivity", "get result of : $params")
@@ -166,7 +166,7 @@ class MainActivity : AppCompatActivity() {
     private fun replaceParams(params: String): String {
         var rs = params
         rs = rs.replace("x", "*")
-        rs = rs.replace("%", "*0.01")
+        rs = rs.replace("%", "*(0.01)")
         return rs
     }
 
