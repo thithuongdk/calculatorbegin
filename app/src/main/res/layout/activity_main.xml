@@ -4,12 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:backgroundTint="#242020"
-    android:backgroundTintMode="multiply"
+    android:background="@color/ic_launcher_background"
     android:clipToPadding="true"
     android:forceDarkAllowed="true"
-    android:foregroundTint="#974141"
     android:padding="16dp"
     android:visibility="visible">
 
