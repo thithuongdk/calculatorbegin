@@ -1,17 +1,21 @@
 package com.example.calculatorbegin
 
 import android.annotation.SuppressLint
-//import android.graphics.Color
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.WindowInsetsController
-//import android.view.View
+import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import net.objecthunter.exp4j.Expression
+import net.objecthunter.exp4j.ExpressionBuilder
+//import org.mariuszgromada.math.mxparser.Expression
+//import net.objecthunter.exp4j.ExpressionBuilder
 
 @SuppressLint("SetTextI18n")
 class MainActivity : AppCompatActivity() {
@@ -19,10 +23,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var textViewHistory: TextView
     private lateinit var textViewResult: TextView
     private lateinit var editTextParams: EditText
-    private var paramsTyping: String = ""
-    private var operator: String = ""
-    private var firstParam: String = "0"
-    private var lastResult: Boolean = false
+    private var lastResult: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,152 +37,145 @@ class MainActivity : AppCompatActivity() {
         } else {
             window.statusBarColor = ContextCompat.getColor(this, R.color.ic_launcher_background)
         }
-
+        assignTextView()
+        assignButton()
+    }
+    private fun assignTextView() {
         textViewHistory = findViewById(R.id.textViewHistory)
         textViewResult = findViewById(R.id.textViewResult)
         editTextParams = findViewById(R.id.editTextParams)
+    }
 
-        val buttonNumbers = arrayOf(
-            R.id.button0, R.id.button1, R.id.button2,
-            R.id.button3, R.id.button4, R.id.button5,
-            R.id.button6, R.id.button7, R.id.button8, R.id.button9
-        )
+    private fun assignButton() {
+        findViewById<Button>(R.id.button0).setOnClickListener { pressParams("0") }
+        findViewById<Button>(R.id.button1).setOnClickListener { pressParams("1") }
+        findViewById<Button>(R.id.button2).setOnClickListener { pressParams("2") }
+        findViewById<Button>(R.id.button3).setOnClickListener { pressParams("3") }
+        findViewById<Button>(R.id.button4).setOnClickListener { pressParams("4") }
+        findViewById<Button>(R.id.button5).setOnClickListener { pressParams("5") }
+        findViewById<Button>(R.id.button6).setOnClickListener { pressParams("6") }
+        findViewById<Button>(R.id.button7).setOnClickListener { pressParams("7") }
+        findViewById<Button>(R.id.button8).setOnClickListener { pressParams("8") }
+        findViewById<Button>(R.id.button9).setOnClickListener { pressParams("9") }
 
-        for (i in buttonNumbers.indices) {
-            findViewById<Button>(buttonNumbers[i]).setOnClickListener {
-                val s = i.toString()
-                editTextParams.text.append(s)
-                paramsTyping += s
-            }
-        }
-        findViewById<Button>(R.id.buttonDot).setOnClickListener {
-            if (paramsTyping.contains('.')) {
-                Log.w("MainActivity", "Duplicate dot")
-                return@setOnClickListener
-            }
-            if (paramsTyping.isEmpty()) {
-                editTextParams.text.append("0.")
-                paramsTyping += "0."
-                return@setOnClickListener
-            }
-            editTextParams.text.append(".")
-            paramsTyping += "."
-        }
-        findViewById<Button>(R.id.buttonAdd).setOnClickListener { setOperator("+") }
-        findViewById<Button>(R.id.buttonSub).setOnClickListener { setOperator("-") }
-        findViewById<Button>(R.id.buttonMul).setOnClickListener { setOperator("x") }
-        findViewById<Button>(R.id.buttonDiv).setOnClickListener { setOperator("/") }
-        findViewById<Button>(R.id.buttonPct).setOnClickListener { setOperator("%") }
+        findViewById<Button>(R.id.buttonDot).setOnClickListener { pressOperator(".") }
+        findViewById<Button>(R.id.buttonAdd).setOnClickListener { pressOperator("+") }
+        findViewById<Button>(R.id.buttonSub).setOnClickListener { pressOperator("-") }
+        findViewById<Button>(R.id.buttonMul).setOnClickListener { pressOperator("x") }
+        findViewById<Button>(R.id.buttonDiv).setOnClickListener { pressOperator("/") }
+        findViewById<Button>(R.id.buttonPct).setOnClickListener { pressOperator("%") }
 
-        findViewById<Button>(R.id.buttonEq).setOnClickListener { getResult() }
+        findViewById<Button>(R.id.buttonEq).setOnClickListener { getEqResult() }
         findViewById<Button>(R.id.buttonClr).setOnClickListener { clearParams() }
         findViewById<Button>(R.id.buttonDel).setOnClickListener { deleteParams() }
     }
 
-    private fun setOperator(op: String) {
-        if (paramsTyping.isEmpty() && firstParam.isEmpty()) {
+    private fun pressOperator(key: String) {
+        Log.i("MainActivity", "press operator: $key")
+        editTextParams.text.append(key)
+        getTmpResult()
+    }
+
+    private fun pressParams(key: String) {
+        Log.i("MainActivity", "press key: $key")
+        if (lastResult == true) {
             editTextParams.text.clear()
-            paramsTyping = textViewResult.text.toString().replace("=", "")
-            if (paramsTyping.isEmpty()) {
-                paramsTyping = "0"
-            }
-            editTextParams.text.append(paramsTyping)
-        } else if (paramsTyping.isEmpty() && operator.isNotEmpty()) {
-            paramsTyping = firstParam
-            deleteParams()
-        } else if (operator == "%") {
-            paramsTyping = if (paramsTyping.isEmpty()) {
-                "0.01"
-            } else {
-                (paramsTyping.toDouble() / 100).toString()
-            }
-            return
         }
-        operator = op
-        editTextParams.text.append(op)
-        firstParam = paramsTyping
-        paramsTyping = ""
+        editTextParams.text.append(key)
+        getTmpResult()
     }
 
     private fun deleteParams() {
-        Log.i("MainActivity", "start deleteParams firstParam=$firstParam operator=$operator paramsTyping=$paramsTyping")
-        if (paramsTyping.isEmpty() && operator.isEmpty()) {
+        var params = editTextParams.text.toString()
+        Log.i("MainActivity", "delete back from : $params")
+        if (params.isEmpty()) {
             Log.w("MainActivity",  "empty params")
             return
         }
-        editTextParams.text.delete(editTextParams.text.length - 1, editTextParams.text.length)
-        if(paramsTyping.isNotEmpty()) {
-            paramsTyping = paramsTyping.substring(0, paramsTyping.length - 1)
-        } else {
-            operator = ""
-            paramsTyping = firstParam
-            firstParam = "0"
-        }
-
-        Log.i("MainActivity", "end deleteParams firstParam=$firstParam operator=$operator paramsTyping=$paramsTyping")
+        editTextParams.text.delete(editTextParams.text.length-1, editTextParams.text.length)
+        getTmpResult()
     }
 
     private fun clearParams() {
-//        editTextParams.text.clear()
-        operator = ""
-        firstParam = ""
-        paramsTyping = ""
+        editTextParams.text.clear()
+    }
+
+    private fun udpateHistory() {
+        val params = editTextParams.text
+        val res = textViewResult.text
+        val his = textViewHistory.text
+        textViewHistory.text = "$his\n$params $res"
     }
 
     private fun setResult(params: String, res0: String) {
         var res = res0
         if (!params.contains('.') && res.endsWith(".0")) {
-            res = res.replace(".0", "")
+            res = res.removeSuffix(".0")
         }
         textViewResult.text = "=$res"
-        val his = textViewHistory.text
-        textViewHistory.text = "$his\n$params =$res"
     }
 
     private fun setError(err: String) {
-        textViewResult.text = err
         Log.w("MainActivity",  err)
+        textViewResult.text = err
     }
 
-    private fun getResult() {
-        if (operator.isEmpty() || paramsTyping.isEmpty()) {
-            if (operator.isNotEmpty()) {
-                deleteParams()
-            }
-            if (paramsTyping.isNotEmpty()) {
-                firstParam = paramsTyping
-            }
-            if (firstParam.isEmpty()) {
-                editTextParams.setText("0")
-            }
-            setResult(editTextParams.text.toString(), firstParam)
-            clearParams()
-            Log.w("MainActivity", "operator or second value is null")
+    private fun getTmpResult() {
+        val params = editTextParams.text.toString()
+        Log.i("MainActivity", "get tmp result of : $params")
+
+        lastResult = false
+        try {
+            val result = getResult(params)
+            setResult(params, result)
+        } catch (e: Exception) {
             return
         }
-        val secondValue = paramsTyping.toDouble()
-        val firstValue = firstParam.toDouble()
-        val result = when (operator) {
-            "+" -> firstValue + secondValue
-            "-" -> firstValue - secondValue
-            "x" -> firstValue * secondValue
-            "/" -> {
-                if (secondValue != 0.0) {
-                    firstValue / secondValue
-                } else {
-                    setError("Error: Division by zero")
-                    clearParams()
-                    return
-                }
-            }
-            else -> {
-                setError("Error: Unknown operator")
-                clearParams()
-                return
-            }
+    }
+
+    private fun getEqResult() {
+        var params = editTextParams.text.toString()
+        if (params.isEmpty()) {
+            editTextParams.setText(0)
+            params = "0"
         }
-        setResult(editTextParams.text.toString(), result.toString())
-        clearParams()
+        Log.i("MainActivity", "get result of : $params")
+
         lastResult = true
+        val result = try {
+            getResult(params)
+        } catch (e: Exception) {
+            setError("params ${params} err: ${e.message}")
+            return
+        }
+        setResult(params, result)
+        udpateHistory()
+        editTextParams.text.clear()
+        editTextParams.append(textViewResult.text.toString().removePrefix("="))
+    }
+
+    private fun getResult(params: String): String {
+         try {
+             var tmpParams = replaceParams(params)
+             return evaluateExpression(tmpParams).toString()
+         } catch (e: Exception) {
+             throw e
+         }
+    }
+
+    private fun replaceParams(params: String): String {
+        var rs = params
+        rs = rs.replace("x", "*")
+        rs = rs.replace("%", "*0.01")
+        return rs
+    }
+
+    private fun evaluateExpression(params: String): Double {
+        return try {
+            val expObj = ExpressionBuilder(params)
+            expObj.build().evaluate()
+        } catch (e: Exception) {
+            throw e
+        }
     }
 }
