@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.EditText
+import android.widget.GridLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import net.objecthunter.exp4j.Expression
@@ -23,7 +24,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var textViewHistory: TextView
     private lateinit var textViewResult: TextView
     private lateinit var editTextParams: EditText
+    private lateinit var gridExt1Buttons: GridLayout
+    private lateinit var gridExt2Buttons: GridLayout
     private var lastResult: Boolean = true
+    private var extState: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,13 +41,15 @@ class MainActivity : AppCompatActivity() {
         } else {
             window.statusBarColor = ContextCompat.getColor(this, R.color.ic_launcher_background)
         }
-        assignTextView()
+        assignWidget()
         assignButton()
     }
-    private fun assignTextView() {
+    private fun assignWidget() {
         textViewHistory = findViewById(R.id.textViewHistory)
         textViewResult = findViewById(R.id.textViewResult)
         editTextParams = findViewById(R.id.editTextParams)
+        gridExt1Buttons = findViewById(R.id.gridExt1Buttons)
+        gridExt2Buttons = findViewById(R.id.gridExt2Buttons)
     }
 
     private fun assignButton() {
@@ -61,13 +67,65 @@ class MainActivity : AppCompatActivity() {
         findViewById<Button>(R.id.buttonDot).setOnClickListener { pressOperator(".") }
         findViewById<Button>(R.id.buttonAdd).setOnClickListener { pressOperator("+") }
         findViewById<Button>(R.id.buttonSub).setOnClickListener { pressOperator("-") }
-        findViewById<Button>(R.id.buttonMul).setOnClickListener { pressOperator("x") }
-        findViewById<Button>(R.id.buttonDiv).setOnClickListener { pressOperator("/") }
+        findViewById<Button>(R.id.buttonMul).setOnClickListener { pressOperator("×") }
+        findViewById<Button>(R.id.buttonDiv).setOnClickListener { pressOperator("÷") }
         findViewById<Button>(R.id.buttonPct).setOnClickListener { pressOperator("%") }
+        findViewById<Button>(R.id.buttonThth).setOnClickListener { pressOperator("‰") }
+
+        findViewById<Button>(R.id.buttonPi).setOnClickListener { pressOperator("π") }
+        findViewById<Button>(R.id.buttonSqr).setOnClickListener { pressOperator("²") }
+        findViewById<Button>(R.id.buttonCube).setOnClickListener { pressOperator("³") }
+        findViewById<Button>(R.id.buttonOpen).setOnClickListener { pressOperator("(") }
+        findViewById<Button>(R.id.buttonClose).setOnClickListener { pressOperator(")") }
+        findViewById<Button>(R.id.buttonOpen2).setOnClickListener { pressOperator("(") }
+        findViewById<Button>(R.id.buttonClose2).setOnClickListener { pressOperator(")") }
+        findViewById<Button>(R.id.buttonPow).setOnClickListener { pressOperator("^") }
+        findViewById<Button>(R.id.buttonDeg).setOnClickListener { pressOperator("°") }
+        findViewById<Button>(R.id.buttonE).setOnClickListener { pressOperator("e") }
+        findViewById<Button>(R.id.buttonMod).setOnClickListener { pressOperator("mod") }
+
+        findViewById<Button>(R.id.buttonSqrt).setOnClickListener { pressParams("sqrt(") }
+        findViewById<Button>(R.id.buttonSin).setOnClickListener { pressParams("sin(") }
+        findViewById<Button>(R.id.buttonCos).setOnClickListener { pressParams("cos(") }
+        findViewById<Button>(R.id.buttonTan).setOnClickListener { pressParams("tan(") }
+        findViewById<Button>(R.id.buttonAsin).setOnClickListener { pressParams("asin(") }
+        findViewById<Button>(R.id.buttonAcos).setOnClickListener { pressParams("acos(") }
+        findViewById<Button>(R.id.buttonAtan).setOnClickListener { pressParams("atan(") }
+        findViewById<Button>(R.id.buttonLog).setOnClickListener { pressParams("log(") }
+        findViewById<Button>(R.id.buttonLn).setOnClickListener { pressParams("ln(") }
+        findViewById<Button>(R.id.buttonAbs).setOnClickListener { pressParams("abs(") }
+        findViewById<Button>(R.id.buttonFloor).setOnClickListener { pressParams("floor(") }
+        findViewById<Button>(R.id.buttonCeil).setOnClickListener { pressParams("ceil(") }
+
 
         findViewById<Button>(R.id.buttonEq).setOnClickListener { getEqResult() }
         findViewById<Button>(R.id.buttonClr).setOnClickListener { clearParams() }
         findViewById<Button>(R.id.buttonDel).setOnClickListener { deleteParams() }
+        findViewById<Button>(R.id.buttonExt).setOnClickListener { changeState() }
+    }
+
+    private fun changeState() {
+        Log.i("MainActivity", "change from State $extState")
+        when (extState) {
+            0 -> {
+                extState = 1
+                gridExt1Buttons.visibility = View.VISIBLE
+                gridExt2Buttons.visibility = View.GONE
+                findViewById<Button>(R.id.buttonExt).text = "Ext2"
+            }
+            1 -> {
+                extState = 2
+                gridExt1Buttons.visibility = View.GONE
+                gridExt2Buttons.visibility = View.VISIBLE
+                findViewById<Button>(R.id.buttonExt).text = "Ext0"
+            }
+            2 -> {
+                extState = 0
+                gridExt1Buttons.visibility = View.GONE
+                gridExt2Buttons.visibility = View.GONE
+                findViewById<Button>(R.id.buttonExt).text = "Ext1"
+            }
+        }
     }
 
     private fun pressOperator(key: String) {
@@ -165,8 +223,16 @@ class MainActivity : AppCompatActivity() {
 
     private fun replaceParams(params: String): String {
         var rs = params
-        rs = rs.replace("x", "*")
+        rs = rs.replace("×", "*")
+        rs = rs.replace("÷", "/")
         rs = rs.replace("%", "*(0.01)")
+        rs = rs.replace("‰", "*(0.001)")
+        rs = rs.replace("²", "^(2)")
+        rs = rs.replace("³", "^(3)")
+        rs = rs.replace("°", "/180*π")
+        rs = rs.replace("mod", "%")
+        rs = rs.replace("log", "log10")
+        rs = rs.replace("ln", "log")
         return rs
     }
 

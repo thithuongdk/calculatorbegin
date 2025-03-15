@@ -21,6 +21,7 @@
         android:alpha="10"
         android:focusable="true"
         android:inputType="none"
+        android:contextClickable="true"
         tools:ignore="Autofill" />
 
     <EditText
@@ -40,7 +41,7 @@
         style="@style/TextBoxStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/gridButtons"
+        android:layout_above="@+id/layoutButtons"
         android:layout_centerVertical="true"
         android:layout_marginBottom="20dp"
         android:focusable="true"
@@ -48,115 +49,98 @@
         android:inputType="none"
         tools:ignore="Autofill" />
 
-    <GridLayout
-        android:id="@+id/gridButtons"
+    <LinearLayout
+        android:id="@+id/layoutButtons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="5dp"
-        android:columnCount="4"
-        android:rowCount="5">
+        android:layout_centerVertical="true"
+        android:orientation="vertical">
 
-        <Button
-            android:id="@+id/buttonAdd"
-            style="@style/ButtonStyle"
-            android:text="+" />
+        <GridLayout
+            android:id="@+id/gridExt1Buttons"
+            android:layout_above="@id/gridBaseButtons"
+            android:layout_centerVertical="true"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="4"
+            android:rowCount="3">
 
-        <Button
-            android:id="@+id/buttonSub"
-            style="@style/ButtonStyle"
-            android:text="-" />
+            <Button style="@style/ButtonExtStyle" android:id="@+id/buttonSin"  android:text="sin" />
+            <Button style="@style/ButtonExtStyle" android:id="@+id/buttonCos"  android:text="cos" />
+            <Button style="@style/ButtonExtStyle" android:id="@+id/buttonTan"  android:text="tan" />
+            <Button style="@style/ButtonExtStyle" android:id="@+id/buttonDeg"  android:text="x°" />
 
-        <Button
-            android:id="@+id/buttonMul"
-            style="@style/ButtonStyle"
-            android:text="x" />
+            <Button style="@style/ButtonExtStyle" android:id="@+id/buttonSqr"  android:text="x²" />
+            <Button style="@style/ButtonExtStyle" android:id="@+id/buttonSqrt"  android:text="Sqrt" />
+            <Button style="@style/ButtonExtStyle" android:id="@+id/buttonPow"  android:text="xˆy" />
+            <Button style="@style/ButtonExtStyle" android:id="@+id/buttonAbs"  android:text="abs" />
 
-        <Button
-            android:id="@+id/buttonDiv"
-            style="@style/ButtonStyle"
-            android:text="/" />
+            <Button style="@style/ButtonExtStyle" android:id="@+id/buttonPi"  android:text="π" />
+            <Button style="@style/ButtonExtStyle" android:id="@+id/buttonE"  android:text="e" />
+            <Button style="@style/ButtonExtStyle" android:id="@+id/buttonOpen"  android:text="(" />
+            <Button style="@style/ButtonExtStyle" android:id="@+id/buttonClose"  android:text=")" />
+        </GridLayout>
 
-        <Button
-            android:id="@+id/buttonPct"
-            style="@style/ButtonStyle"
-            android:text="%" />
+        <GridLayout
+            android:id="@+id/gridExt2Buttons"
+            android:layout_above="@id/gridBaseButtons"
+            android:layout_centerVertical="true"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="4"
+            android:rowCount="2">
 
-        <Button
-            android:id="@+id/button1"
-            style="@style/ButtonStyle"
-            android:text="1" />
+            <Button style="@style/ButtonExtStyle" android:id="@+id/buttonAsin"  android:text="asin" />
+            <Button style="@style/ButtonExtStyle" android:id="@+id/buttonAcos" android:text="acos" />
+            <Button style="@style/ButtonExtStyle" android:id="@+id/buttonAtan"  android:text="atan" />
+            <Button style="@style/ButtonExtStyle" android:id="@+id/buttonLn"  android:text="ln" />
 
-        <Button
-            android:id="@+id/button2"
-            style="@style/ButtonStyle"
-            android:text="2" />
+            <Button style="@style/ButtonExtStyle" android:id="@+id/buttonMod"  android:text="mod" />
+            <Button style="@style/ButtonExtStyle" android:id="@+id/buttonCube"  android:text="x³" />
+            <Button style="@style/ButtonExtStyle" android:id="@+id/buttonThth"  android:text="‰" />
+            <Button style="@style/ButtonExtStyle" android:id="@+id/buttonLog"  android:text="log" />
 
-        <Button
-            android:id="@+id/button3"
-            style="@style/ButtonStyle"
-            android:text="3" />
+            <Button style="@style/ButtonExtStyle" android:id="@+id/buttonCeil"  android:text="ceil" />
+            <Button style="@style/ButtonExtStyle" android:id="@+id/buttonFloor"  android:text="floor" />
+            <Button style="@style/ButtonExtStyle" android:id="@+id/buttonOpen2"  android:text="(" />
+            <Button style="@style/ButtonExtStyle" android:id="@+id/buttonClose2"  android:text=")" />
+        </GridLayout>
 
-        <Button
-            android:id="@+id/buttonDel"
-            style="@style/ButtonStyle"
-            android:text="Del" />
+        <GridLayout
+            android:id="@+id/gridBaseButtons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="5dp"
+            android:columnCount="4"
+            android:rowCount="5">
 
-        <Button
-            android:id="@+id/button4"
-            style="@style/ButtonStyle"
-            android:text="4" />
+            <Button style="@style/ButtonStyle" android:id="@+id/buttonAdd" android:text="+" />
+            <Button style="@style/ButtonStyle" android:id="@+id/buttonSub" android:text="-" />
+            <Button style="@style/ButtonStyle" android:id="@+id/buttonMul" android:text="×" />
+            <Button style="@style/ButtonStyle" android:id="@+id/buttonDiv" android:text="÷" />
+            <Button style="@style/ButtonStyle" android:id="@+id/buttonPct" android:text="%" />
+            <Button style="@style/ButtonStyle" android:id="@+id/button1" android:text="1" />
+            <Button style="@style/ButtonStyle" android:id="@+id/button2" android:text="2" />
+            <Button style="@style/ButtonStyle" android:id="@+id/button3" android:text="3" />
+            <Button style="@style/ButtonExtStyle" android:id="@+id/buttonDel" android:text="Del" android:backgroundTint="#762D2D" />
+            <Button style="@style/ButtonStyle" android:id="@+id/button4" android:text="4" />
+            <Button style="@style/ButtonStyle" android:id="@+id/button5" android:text="5" />
+            <Button style="@style/ButtonStyle" android:id="@+id/button6" android:text="6" />
+            <Button style="@style/ButtonExtStyle" android:id="@+id/buttonClr" android:text="AC" android:backgroundTint="#762D2D" />
+            <Button style="@style/ButtonStyle" android:id="@+id/button7" android:text="7" />
+            <Button style="@style/ButtonStyle" android:id="@+id/button8" android:text="8" />
+            <Button style="@style/ButtonStyle" android:id="@+id/button9" android:text="9" />
+            <Button style="@style/ButtonExtStyle" android:id="@+id/buttonExt" android:text="Ext" android:backgroundTint="#762D2D" />
+            <Button style="@style/ButtonStyle" android:id="@+id/buttonDot" android:text="." />
+            <Button style="@style/ButtonStyle" android:id="@+id/button0" android:text="0" />
+            <Button style="@style/ButtonStyle" android:id="@+id/buttonEq" android:text="=" android:backgroundTint="#762D2D" />
 
-        <Button
-            android:id="@+id/button5"
-            style="@style/ButtonStyle"
-            android:text="5" />
-
-        <Button
-            android:id="@+id/button6"
-            style="@style/ButtonStyle"
-            android:text="6" />
-
-        <Button
-            android:id="@+id/buttonClr"
-            style="@style/ButtonStyle"
-            android:text="AC" />
-
-        <Button
-            android:id="@+id/button7"
-            style="@style/ButtonStyle"
-            android:text="7" />
-
-        <Button
-            android:id="@+id/button8"
-            style="@style/ButtonStyle"
-            android:text="8" />
-
-        <Button
-            android:id="@+id/button9"
-            style="@style/ButtonStyle"
-            android:text="9" />
-
-        <Button
-            android:id="@+id/buttonExt"
-            style="@style/ButtonStyle"
-            android:text="Ext" />
-
-        <Button
-            android:id="@+id/buttonDot"
-            style="@style/ButtonStyle"
-            android:text="." />
-
-        <Button
-            android:id="@+id/button0"
-            style="@style/ButtonStyle"
-            android:text="0" />
-
-        <Button
-            android:id="@+id/buttonEq"
-            style="@style/ButtonStyle"
-            android:text="=" />
-
-    </GridLayout>
+        </GridLayout>
+    </LinearLayout>
 
 </RelativeLayout>
